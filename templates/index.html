@@ -1,45 +1,93 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>โปรแกรมแปลงเลขฐานสอง</title>
+    <title>Rak Binary Tool</title>
     
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
     <div class="card">
-        <h1>Binary Converter ☁️</h1>
-        <p class="subtitle">เครื่องมือแปลงข้อความและเลขฐานสองแบบง่ายๆ</p>
+        <h1>Binary Converter</h1>
+        <p class="subtitle">encoding & decoding tool</p>
 
         <form method="POST">
             
-            <label>เลือกโหมดการทำงาน</label>
-            <select name="mode">
-                <option value="to_binary">🔤 ข้อความ ⮕ เลขฐานสอง</option>
-                <option value="to_text">0️⃣1️⃣ เลขฐานสอง ⮕ ข้อความ</option>
+            <label>Operation Mode</label>
+            <select name="mode" id="modeSelect">
+                <option value="to_binary" {% if request.form.get('mode') == 'to_binary' %}selected{% endif %}>Text to Binary</option>
+                <option value="to_text" {% if request.form.get('mode') == 'to_text' %}selected{% endif %}>Binary to Text</option>
             </select>
 
-            <label>กรอกข้อมูล</label>
-            <textarea name="user_input" placeholder="พิมพ์ข้อความ หรือ ใส่เลขฐานสองที่นี่...">{{ request.form.get('user_input', '') }}</textarea>
+            <label>Input Data</label>
+            <textarea name="user_input" id="userInput" placeholder="Enter your text or binary code here...">{{ request.form.get('user_input', '') }}</textarea>
 
-            <button type="submit">แปลงข้อมูลทันที ✨</button>
+            <button type="submit">Process Data</button>
         </form>
 
         {% if result_show %}
-        <div class="result-box">
-            <span class="result-title">ผลลัพธ์ที่ได้</span>
-            <div class="result-content">
+        <div class="result-box" id="resultBox">
+            <div class="result-header">
+                <span class="result-title">Output</span>
+                <button onclick="copyToClipboard()" class="copy-btn">
+                    Copy
+                </button>
+            </div>
+            
+            <div class="result-content" id="finalResult">
                 {{ result_show }}
             </div>
         </div>
         {% endif %}
 
         <div class="footer">
-            Made with 💙 by Python Flask
+            Developed by RakkyZ
         </div>
     </div>
 
+    <script>
+        function copyToClipboard() {
+            const textToCopy = document.getElementById("finalResult").innerText;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const btn = document.querySelector(".copy-btn");
+                
+                btn.innerText = "Copied";
+                btn.style.color = "#10b981"; 
+                btn.style.borderColor = "#10b981";
+
+                setTimeout(() => {
+                    btn.innerText = "Copy";
+                    btn.style.color = ""; 
+                    btn.style.borderColor = "";
+                }, 2000);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const modeSelect = document.getElementById('modeSelect');
+            const resultBox = document.getElementById('resultBox');
+            const userInput = document.getElementById('userInput'); // ตัวแปรช่องกรอกข้อมูล
+
+            // ถ้ามีกล่องผลลัพธ์แสดงอยู่
+            if (resultBox) {
+                
+                // 1. ซ่อนเมื่อเปลี่ยนโหมด (อันเดิม)
+                if (modeSelect) {
+                    modeSelect.addEventListener('change', function() {
+                        resultBox.style.display = 'none';
+                    });
+                }
+
+                // 2. ซ่อนเมื่อมีการพิมพ์ หรือ ลบข้อมูล (เพิ่มใหม่)
+                if (userInput) {
+                    userInput.addEventListener('input', function() {
+                        resultBox.style.display = 'none';
+                    });
+                }
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,7 +1,6 @@
-/* style.css */
-@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&family=Fira+Code:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* --- Reset & Base --- */
+/* --- 1. Base Setup & Cool Background --- */
 * {
     margin: 0;
     padding: 0;
@@ -9,142 +8,210 @@
 }
 
 body {
-    font-family: 'Prompt', sans-serif; /* ฟอนต์ภาษาไทยสวยๆ */
-    background-color: #f0f4f8; /* สีพื้นหลังเทาอมฟ้าอ่อนๆ สบายตา */
-    color: #334155;
+    font-family: 'Inter', sans-serif;
+    background-color: #0B1120; /* สีพื้นมืดสนิท */
+    
+    /* สร้างลายตาราง Grid จางๆ + แสงสปอตไลท์ด้านบน */
+    background-image: 
+        radial-gradient(at 50% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 60%),
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 40px 40px, 40px 40px;
+    
+    color: #e2e8f0;
     height: 100vh;
     display: flex;
-    justify_content: center;
+    justify-content: center;
     align-items: center;
+    padding: 20px;
 }
 
-/* --- Container (กล่องขาวตรงกลาง) --- */
+/* --- 2. The Glass Card --- */
 .card {
-    background-color: #ffffff;
+    /* พื้นหลังโปร่งแสงนิดๆ (Glassmorphism) */
+    background: rgba(30, 41, 59, 0.7); 
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    
     width: 100%;
-    max-width: 520px;
+    max-width: 500px;
     padding: 2.5rem;
-    border-radius: 24px;
-    /* เงานุ่มๆ ให้ดูลอยขึ้นมา */
-    box-shadow: 0 20px 40px -5px rgba(148, 163, 184, 0.3);
-    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    
+    /* ขอบเรืองแสงบางๆ */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    
+    position: relative;
+    overflow: hidden;
 }
 
-/* --- Typography --- */
+/* แสงพาดผ่านด้านบน */
+.card::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.5), transparent);
+}
+
+/* --- 3. Typography (Gradient Text) --- */
 h1 {
     font-size: 1.8rem;
-    font-weight: 600;
-    color: #1e293b;
+    font-weight: 800;
     text-align: center;
     margin-bottom: 0.5rem;
+    
+    /* ตัวหนังสือไล่สี */
+    background: linear-gradient(to right, #38bdf8, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    letter-spacing: -0.5px;
 }
 
 .subtitle {
     text-align: center;
-    color: #64748b;
-    font-size: 0.9rem;
-    margin-bottom: 2rem;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
 }
 
-/* --- Form --- */
+/* --- 4. Form Elements --- */
 form {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.2rem;
 }
 
 label {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    color: #475569;
-    margin-bottom: -0.8rem;
-    display: block;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: -0.5rem;
 }
 
-/* ช่อง input และ select */
 select, textarea {
     width: 100%;
-    padding: 14px 18px;
+    padding: 16px;
     border-radius: 12px;
-    border: 2px solid #e2e8f0;
-    background-color: #f8fafc;
-    font-size: 1rem;
-    font-family: 'Fira Code', monospace; /* ฟอนต์ Code */
-    color: #334155;
-    transition: all 0.2s ease;
+    background-color: rgba(15, 23, 42, 0.6); 
+    border: 1px solid #334155;
+    color: #f8fafc;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
     outline: none;
+    transition: all 0.3s ease;
 }
 
 textarea {
     min-height: 120px;
-    resize: vertical;
+    resize: none;
+    line-height: 1.6;
 }
 
-/* เอฟเฟกต์ตอนคลิกช่อง */
+/* Focus: เรืองแสงสีฟ้า */
 select:focus, textarea:focus {
-    border-color: #3b82f6; /* สีฟ้า */
-    background-color: #ffffff;
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    border-color: #38bdf8;
+    background-color: rgba(15, 23, 42, 0.9);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.15); /* Glow */
 }
 
-/* --- Button --- */
+/* --- 5. Button (Neon Glow) --- */
 button {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    background: #3b82f6;
     color: white;
     font-size: 1rem;
     font-weight: 600;
-    padding: 14px;
+    padding: 16px;
     border: none;
     border-radius: 12px;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    margin-top: 0.5rem;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+    position: relative;
+    overflow: hidden;
 }
 
 button:hover {
-    transform: translateY(-2px); /* ลอยขึ้นนิดนึง */
-    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+    background: #2563eb;
+    transform: translateY(-2px);
+    /* แสงฟุ้งๆ รอบปุ่ม */
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); 
 }
 
 button:active {
     transform: translateY(0);
 }
 
-/* --- Result Area --- */
+/* --- 6. Result Box --- */
 .result-box {
     margin-top: 2rem;
-    padding: 1.5rem;
-    background-color: #f1f5f9;
+    background-color: rgba(15, 23, 42, 0.5);
+    border: 1px solid #334155;
     border-radius: 12px;
-    border-left: 5px solid #10b981; /* ขีดเขียว */
-    animation: fadeIn 0.5s ease;
+    padding: 1.5rem;
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.8rem;
 }
 
 .result-title {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    color: #64748b;
+    color: #94a3b8;
     font-weight: 700;
-    margin-bottom: 0.5rem;
-    display: block;
+    letter-spacing: 1px;
 }
 
 .result-content {
-    font-family: 'Fira Code', monospace;
-    color: #0f172a;
-    font-size: 1.1rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: #67e8f9; /* สีฟ้าสว่าง (Cyan) */
+    font-size: 1rem;
     word-break: break-all;
+    text-shadow: 0 0 10px rgba(103, 232, 249, 0.2); /* ตัวหนังสือเรืองแสงนิดๆ */
+}
+
+/* ปุ่ม Copy */
+.copy-btn {
+    background: transparent;
+    border: 1px solid #475569;
+    color: #cbd5e1;
+    font-size: 0.75rem;
+    padding: 6px 12px;
+    margin-top: 0;
+    border-radius: 8px;
+    box-shadow: none;
+}
+
+.copy-btn:hover {
+    border-color: #94a3b8;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    transform: none;
+    box-shadow: none;
 }
 
 /* Footer */
 .footer {
     text-align: center;
     margin-top: 2rem;
-    font-size: 0.8rem;
-    color: #94a3b8;
+    font-size: 0.75rem;
+    color: #475569;
+    opacity: 0.6;
 }
 
-@keyframes fadeIn {
+@keyframes slideUp {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
